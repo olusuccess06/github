@@ -1,0 +1,48 @@
+# Function to create a special "matrix" object that can cache its inverse
+makeCacheMatrix <- function(x = matrix()) {
+  # Initialize the inverse matrix as NULL
+  inv <- NULL
+  
+  # Setter function to set the matrix
+  set <- function(y) {
+    x <<- y
+    inv <<- NULL  # Reset the cached inverse when the matrix is changed
+  }
+  
+  # Getter function to retrieve the matrix
+  get <- function() x
+  
+  # Getter function to retrieve the cached inverse
+  getInverse <- function() inv
+  
+  # Setter function to cache the inverse
+  setInverse <- function(inverse) inv <<- inverse
+  
+  # Return a list of functions
+  list(set = set,
+       get = get,
+       getInverse = getInverse,
+       setInverse = setInverse)
+}
+
+# Function to compute the inverse of the special "matrix" object
+cacheSolve <- function(x, ...) {
+  # Retrieve the cached inverse
+  inv <- x$getInverse()
+  
+  # If the inverse is already computed, return it
+  if (!is.null(inv)) {
+    message("Getting cached data")
+    return(inv)
+  }
+  
+  # If the inverse is not cached, compute it
+  mat <- x$get()
+  inv <- solve(mat, ...)
+  
+  # Cache the computed inverse
+  x$setInverse(inv)
+  
+  # Return the inverse
+  inv
+}

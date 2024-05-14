@@ -2,7 +2,7 @@
 ## functions do
 
 ## Write a short comment describing this function
-## The makeCacheMatrix function includes a list of functions such as:
+## The makeCacheMatrix function caches the inverse of a matrix and it includes a list of functions such as:
 ## set the value of the matrix
 ## get the value of the matrix
 ## set the value of the inverse

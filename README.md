@@ -40,7 +40,7 @@ really a list containing a function to
             getmean <- function() m
             list(set = set, get = get,
                  setmean = setmean,
-                 getmean = getmean)
+                 getmean = getmean);
     }
 
 The following function calculates the mean of the special "vector"

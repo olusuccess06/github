@@ -36,11 +36,11 @@ really a list containing a function to
                     m <<- NULL
             }
             get <- function() x
-            setmean <- function(mean) m <<- mean
+            setmean <- function(mean) m <<- mean;
             getmean <- function() m
             list(set = set, get = get,
                  setmean = setmean,
-                 getmean = getmean)
+                 getmean = getmean);
     }
 
 The following function calculates the mean of the special "vector"

@@ -1,0 +1,15 @@
+a <- 5
+
+outer_function <- function() {
+  b <- 10
+  
+  inner_function <- function() {
+    c <- 15
+    a + b + c
+  }
+  
+  inner_function()
+}
+
+result <- outer_function()
+print(result)

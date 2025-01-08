@@ -27,3 +27,23 @@ cacheSolve <- function(x, ...) {
     message("getting cached data")
     return(inv)
   }
+  
+  # If not, compute the inverse and store it in the cache
+  mat <- x$get()  # Get the matrix
+  inv <- solve(mat, ...)  # Compute the inverse of the matrix
+  x$setInverse(inv)  # Cache the computed inverse
+  
+  inv  # Return the inverse
+}
+# Create a special matrix object
+matrix1 <- makeCacheMatrix(matrix(c(4, 7, 2, 6), nrow = 2, ncol = 2))
+
+# Compute and cache the inverse
+inverse1 <- cacheSolve(matrix1)  # This will compute and cache the inverse
+
+# Retrieve the cached inverse
+inverse2 <- cacheSolve(matrix1)  # This will fetch the cached inverse
+
+# Print both inverses to verify they are the same
+print(inverse1)
+print(inverse2)

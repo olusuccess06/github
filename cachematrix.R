@@ -3,22 +3,22 @@
 makeCacheMatrix <- function(x = matrix()) {
   inv <- NULL # Initialize the inverse as NULL
   
-  # Function to set the matrix
+  # Set the matrix
   set <- function(y) {
     x <<- y
     inv <<- NULL # Reset the inverse when the matrix is updated
   }
   
-  # Function to get the matrix
+  # Get the matrix
   get <- function() x
   
-  # Function to set the inverse
+  # Set the inverse
   setInverse <- function(inverse) inv <<- inverse
   
-  # Function to get the inverse
+  # Get the inverse
   getInverse <- function() inv
   
-  # Return a list of functions
+  # Return a list
   list(set = set, get = get,
        setInverse = setInverse,
        getInverse = getInverse)
@@ -30,7 +30,7 @@ cacheSolve <- function(x, ...) {
   inv <- x$getInverse() # Check if the inverse is already cached
   
   if (!is.null(inv)) {
-    message("Getting cached inverse")
+    message("Getting cached inverse!")
     return(inv) # Return the cached inverse
   }
   

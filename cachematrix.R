@@ -1,15 +1,60 @@
-## Put comments here that give an overall description of what your
-## functions do
-
-## Write a short comment describing this function
-
+# Creates a special "cache-enabled matrix" object that:
+# 1. Stores a matrix
+# 2. Caches its inverse once calculated
+# 3. Provides methods to access/update both
 makeCacheMatrix <- function(x = matrix()) {
-
+  # Initialize cache for inverse (starts empty)
+  inv <- NULL
+  
+  # Setter: Update the matrix and reset cache
+  set <- function(y) {
+    x <<- y        # Store new matrix in parent environment
+    inv <<- NULL   # Clear cached inverse when matrix changes
+  }
+  
+  # Getter: Return the stored matrix
+  get <- function() x
+  
+  # Cache setter: Store calculated inverse
+  setInverse <- function(inverse) inv <<- inverse
+  
+  # Cache getter: Return cached inverse (NULL if not calculated)
+  getInverse <- function() inv
+  
+  # Return list of accessible functions
+  list(set = set,
+       get = get,
+       setInverse = setInverse,
+       getInverse = getInverse)
 }
 
-
-## Write a short comment describing this function
-
+# Computes/saves/retrieves the inverse of a cache-enabled matrix
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  # Check for cached inverse
+  inv <- x$getInverse()
+  
+  # Return cached value if available
+  if(!is.null(inv)) {
+    message("Using cached inverse")
+    return(inv)
+  }
+  
+  # No cache found - calculate fresh inverse
+  data <- x$get()            # Get original matrix
+  inv <- solve(data, ...)    # Compute inverse (with ... args)
+  x$setInverse(inv)          # Save result to cache
+  inv                        # Return new calculation
 }
+
+# Create cache-enabled matrix
+special_matrix <- makeCacheMatrix(matrix(c(4, 3, 3, 2), 2, 2))
+
+# First call - computes and caches
+cacheSolve(special_matrix)  # Returns inverse with calculation
+
+# Subsequent calls - uses cache
+cacheSolve(special_matrix)  # Returns inverse with "Using cached" message
+
+# Update matrix (auto-clears cache)
+special_matrix$set(matrix(c(2, 0, 0, 2), 2, 2))
+cacheSolve(special_matrix)  # Recomputes fresh inverse

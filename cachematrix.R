@@ -1,15 +1,34 @@
-## Put comments here that give an overall description of what your
-## functions do
+# This script does 2 things: 
+# 1. it stores data into an object and initializes a "storage space" for a computation performed on said data
+# 2. it performs computation on the vector, returns an answer, and stores the answer in the storage space
 
-## Write a short comment describing this function
+################################################################################
+# Assignment 2
+################################################################################
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix <- function(x = matrix()) { # The function where data is stored and "stotage" or cache is initialized
+  inv <- NULL
+  set <- function(y) {
+    x <<- y
+    m <<- NULL
+  }
+  get <- function() x
+  setinv <- function(inverse) inv <<- inverse
+  getinv <- function() inv
+  list(set = set, get = get,
+       setinv = setinv,
+       getinv = getinv)
 }
 
-
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheSolve <- function(x, ...) { # A function that solves the inverse of a matrix 'x', the inverse is stored in makeCasheMatrix for fast retrival
+  inv <- x$getinv()
+  if(!is.null(inv)) {
+    message("getting cached data")
+    return(inv)
+  }
+  data <- x$get()
+  inv <- solve(data, ...)
+  x$setinv(inv)
+  inv
 }
+

@@ -6,38 +6,42 @@
 ## This function computes the median of the special "matrix" returned by makeCacheMatrix.
 
 makeCacheMatrix <- function(x = matrix()) {
-                m <- NULL
-            set <- function(y) {
-                    x <<- y
-                    m <<- NULL
-            }
-            get <- function() x
-            setmedian <- function(median) m <<- median
-            getmedian <- function() m
-            list(set = set, get = get,
-                 setmedian = setmedian,
-                 getmedian = getmedian)
-    
+  inv <- NULL
+  
+  set <- function(y) {
+    x <<- y
+    inv <<- NULL  # Reset the inverse when the matrix is changed
+  }
+  
+  get <- function() x
+  
+  setInverse <- function(inverse) inv <<- inverse
+  
+  getInverse <- function() inv
+  
+  list(set = set,
+       get = get,
+       setInverse = setInverse,
+       getInverse = getInverse)
 }
 
 
 
 
-## If the median has already been calculated (and the matrix has not changed),
-## then it retrieves the median from the cache.
-
-
-
-        cacheMedian <- function(x, ...) {
-    m <- x$getmedian()
-    if(!is.null(m)) {
-        message("getting cached data")
-        return(m)
-    }
-    data <- x$get()
-    m <- median(data, ...)
-    x$setmedian(m)
-    m
-}
+cacheSolve <- function(x, ...) {
+  # Try to get the cached inverse
+  inv <- x$getInverse()
+  
+  # If the inverse is already cached, return it
+  if (!is.null(inv)) {
+    message("Getting cached inverse")
+    return(inv)
+  }
+  
+  # If not cached, compute the inverse
+  mat <- x$get()         # Get the matrix
+  inv <- solve(mat, ...) # Compute the inverse using solve()
+  
+  # Cache the inverse for future use
 
 
